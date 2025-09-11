@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import {
   ChevronRight,
@@ -19,7 +19,7 @@ export default function HomePage() {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(150);
+  const [typingSpeed, setTypingSpeed] = useState(80); // Increased speed from 150 to 80
   const { scrollY } = useScroll();
   const yShift = useTransform(scrollY, [0, 400], [0, 30]);
   const containerRef = useRef(null);
@@ -31,22 +31,41 @@ export default function HomePage() {
     "Impressive Profile"
   ];
 
-  // Smooth scroll function
-  const scrollToSection = (id) => {
+  // Fixed smooth scroll function
+  const scrollToSection = useCallback((id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({
+      // Using modern smooth scroll API
+      element.scrollIntoView({ 
         behavior: 'smooth',
-        block: 'start',
+        block: 'start'
       });
     }
-  };
+  }, []);
 
+  // Throttle mousemove events for better performance
   useEffect(() => {
-    const updateMouse = (e) => setMousePosition({ x: e.clientX, y: e.clientY });
-    window.addEventListener('mousemove', updateMouse);
+    let ticking = false;
     
-    // Typewriter effect
+    const updateMouse = (e) => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setMousePosition({ x: e.clientX, y: e.clientY });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    window.addEventListener('mousemove', updateMouse, { passive: true });
+    
+    return () => {
+      window.removeEventListener('mousemove', updateMouse);
+    };
+  }, []);
+
+  // Typewriter effect with faster speed
+  useEffect(() => {
     let timer;
     const handleType = () => {
       const current = currentTextIndex % rotatingTexts.length;
@@ -57,11 +76,11 @@ export default function HomePage() {
         : fullText.substring(0, currentText.length + 1)
       );
       
-      setTypingSpeed(isDeleting ? 75 : 150);
+      setTypingSpeed(isDeleting ? 40 : 80); // Increased speed from 75/150 to 40/80
       
       if (!isDeleting && currentText === fullText) {
-        // Pause at end of typing
-        timer = setTimeout(() => setIsDeleting(true), 1000);
+        // Pause at end of typing (reduced from 1000 to 700)
+        timer = setTimeout(() => setIsDeleting(true), 700);
       } else if (isDeleting && currentText === '') {
         setIsDeleting(false);
         setCurrentTextIndex((current + 1) % rotatingTexts.length);
@@ -71,11 +90,11 @@ export default function HomePage() {
     timer = setTimeout(handleType, typingSpeed);
     
     return () => {
-      window.removeEventListener('mousemove', updateMouse);
       clearTimeout(timer);
     };
   }, [currentText, isDeleting, currentTextIndex, typingSpeed, rotatingTexts]);
 
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -89,31 +108,22 @@ export default function HomePage() {
 
   const itemVariants = {
     hidden: { y: 28, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 100, damping: 14 } },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      transition: { 
+        type: 'spring', 
+        stiffness: 100, 
+        damping: 14,
+        mass: 0.5
+      } 
+    },
   };
 
   const floatingAnimation = {
     y: [0, -15, 0],
     transition: {
       duration: 4,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  };
-
-  const pulseAnimation = {
-    scale: [1, 1.05, 1],
-    transition: {
-      duration: 2,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  };
-
-  const rotateAnimation = {
-    rotate: [0, 5, 0, -5, 0],
-    transition: {
-      duration: 8,
       repeat: Infinity,
       ease: "easeInOut"
     }
@@ -148,17 +158,25 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden" ref={containerRef}>
-      {/* Animated background elements */}
-      <div className="fixed inset-0 pointer-events-none">
+      {/* Performance optimized background elements with will-change */}
+      <div className="fixed inset-0 pointer-events-none" style={{ willChange: 'transform' }}>
         <motion.div
           className="absolute top-24 left-12 w-72 h-72 bg-gradient-to-r from-blue-200/30 to-purple-200/30 rounded-full blur-3xl"
-          style={{ x: mousePosition.x * 0.02, y: mousePosition.y * 0.02 }}
+          style={{ 
+            x: mousePosition.x * 0.02, 
+            y: mousePosition.y * 0.02,
+            willChange: 'transform'
+          }}
           animate={floatingAnimation}
         />
 
         <motion.div
           className="absolute top-1/3 right-16 w-96 h-96 bg-gradient-to-r from-pink-200/20 to-yellow-200/20 rounded-full blur-3xl"
-          style={{ x: mousePosition.x * -0.015, y: mousePosition.y * -0.015 }}
+          style={{ 
+            x: mousePosition.x * -0.015, 
+            y: mousePosition.y * -0.015,
+            willChange: 'transform'
+          }}
           animate={{
             y: [0, -20, 0],
             transition: {
@@ -172,7 +190,11 @@ export default function HomePage() {
 
         <motion.div
           className="absolute bottom-24 left-1/3 w-80 h-80 bg-gradient-to-r from-green-200/25 to-blue-200/25 rounded-3xl blur-3xl"
-          style={{ x: mousePosition.x * 0.01, y: mousePosition.y * 0.01 }}
+          style={{ 
+            x: mousePosition.x * 0.01, 
+            y: mousePosition.y * 0.01,
+            willChange: 'transform'
+          }}
           animate={{
             y: [0, 15, 0],
             transition: {
@@ -188,6 +210,7 @@ export default function HomePage() {
         <motion.div 
           className="absolute top-1/4 left-1/4 w-6 h-6 bg-blue-400/30 rounded-full"
           animate={floatingAnimation}
+          style={{ willChange: 'transform' }}
         />
         <motion.div 
           className="absolute top-2/3 left-1/5 w-4 h-4 bg-purple-400/30 rounded-full"
@@ -200,6 +223,7 @@ export default function HomePage() {
               delay: 0.5
             }
           }}
+          style={{ willChange: 'transform' }}
         />
         <motion.div 
           className="absolute top-1/3 right-1/4 w-5 h-5 bg-pink-400/30 rounded-full"
@@ -212,6 +236,7 @@ export default function HomePage() {
               delay: 1.5
             }
           }}
+          style={{ willChange: 'transform' }}
         />
       </div>
 
@@ -220,38 +245,37 @@ export default function HomePage() {
         className="relative z-50 p-6"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
+        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} // Custom ease for smoother animation
+        style={{ willChange: 'transform, opacity' }}
       >
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <motion.div 
-            className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent" 
-            whileHover={{ scale: 1.05 }}
-            animate={pulseAnimation}
-          >
-            PortfolioCraft
-          </motion.div>
-
-          <div className="flex items-center space-x-6">
+        <div className="max-w-7xl mx-auto flex justify-center items-center">
+          <div className="flex items-center space-x-12">
             <motion.button 
               onClick={() => scrollToSection('work')} 
-              className="text-slate-600 hover:text-blue-600 transition-colors duration-300" 
+              className="text-slate-700 hover:text-blue-600 transition-colors duration-300 relative group" 
               whileHover={{ y: -2 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Templates
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
             </motion.button>
             <motion.button 
               onClick={() => scrollToSection('about')} 
-              className="text-slate-600 hover:text-blue-600 transition-colors duration-300" 
+              className="text-slate-700 hover:text-purple-600 transition-colors duration-300 relative group" 
               whileHover={{ y: -2 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Features
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-600 transition-all duration-300 group-hover:w-full"></span>
             </motion.button>
             <motion.button 
               onClick={() => scrollToSection('contact')} 
-              className="text-slate-600 hover:text-blue-600 transition-colors duration-300" 
+              className="text-slate-700 hover:text-pink-600 transition-colors duration-300 relative group" 
               whileHover={{ y: -2 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Contact
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-600 transition-all duration-300 group-hover:w-full"></span>
             </motion.button>
           </div>
         </div>
@@ -264,8 +288,9 @@ export default function HomePage() {
             <motion.span
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: 'easeOut' }}
+              transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="block"
+              style={{ willChange: 'transform, opacity' }}
             >
               Stand Out With A{' '}
             </motion.span>
@@ -274,7 +299,8 @@ export default function HomePage() {
               className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent inline-block h-20 lg:h-24 overflow-hidden"
               initial={{ backgroundPosition: '200% 0' }}
               animate={{ backgroundPosition: '0% 0' }}
-              transition={{ duration: 1.8, ease: 'easeInOut' }}
+              transition={{ duration: 1.8, ease: "easeInOut" }}
+              style={{ willChange: 'background-position' }}
             >
               <span className="block">
                 {currentText}
@@ -290,10 +316,11 @@ export default function HomePage() {
           </motion.h1>
 
           <motion.p 
-            className="text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto" 
+            className="text-xl text-slate-700 leading-relaxed max-w-2xl mx-auto" 
             initial={{ opacity: 0, y: 16 }} 
             animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: 0.45 }}
+            transition={{ delay: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+            style={{ willChange: 'transform, opacity' }}
           >
             Get noticed with a stunning portfolio that showcases your best work. Our templates are designed to impress clients and employers while highlighting your unique talents and personality.
           </motion.p>
@@ -307,6 +334,7 @@ export default function HomePage() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => scrollToSection('work')}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
               <Palette className="w-5 h-5 mr-2 relative z-10" />
@@ -319,6 +347,7 @@ export default function HomePage() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => scrollToSection('contact')}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <span className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
               <Code className="w-5 h-5 mr-2 relative z-10" />
@@ -336,7 +365,7 @@ export default function HomePage() {
             <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
               Portfolio <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Template Gallery</span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">Choose from our professionally designed templates to create a portfolio that truly represents you and your work.</p>
+            <p className="text-xl text-slate-700 max-w-2xl mx-auto">Choose from our professionally designed templates to create a portfolio that truly represents you and your work.</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -348,8 +377,9 @@ export default function HomePage() {
                 whileHover={{ scale: 1.02, y: -8, boxShadow: '0 25px 50px rgba(0,0,0,0.12)' }}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.2 }}
-                viewport={{ once: true }}
+                transition={{ delay: idx * 0.2, type: "spring", stiffness: 100, damping: 15 }}
+                viewport={{ once: true, margin: '-50px' }}
+                style={{ willChange: 'transform, opacity' }}
               >
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-blue-500/10 rounded-full blur-xl"></div>
                 
@@ -357,12 +387,13 @@ export default function HomePage() {
                   className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.5 }}
+                  style={{ willChange: 'transform' }}
                 >
                   <service.icon className="w-8 h-8 text-white" />
                 </motion.div>
 
                 <h3 className="text-2xl font-bold text-slate-900 mb-3">{service.title}</h3>
-                <p className="text-slate-600 mb-6 leading-relaxed">{service.description}</p>
+                <p className="text-slate-700 mb-6 leading-relaxed">{service.description}</p>
 
                 <div className="space-y-3 mb-6">
                   {service.features.map((f, i) => (
@@ -370,12 +401,14 @@ export default function HomePage() {
                       key={i} 
                       className="flex items-center text-sm text-slate-700"
                       whileHover={{ x: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                      style={{ willChange: 'transform' }}
                     >
                       <motion.div 
                         className="w-2 h-2 bg-blue-500 rounded-full mr-3"
                         animate={{ scale: [1, 1.5, 1] }}
                         transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                        style={{ willChange: 'transform' }}
                       />
                       {f}
                     </motion.div>
@@ -388,6 +421,8 @@ export default function HomePage() {
                     className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 relative overflow-hidden"
                     whileHover={{ scale: 1.02 }} 
                     whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    style={{ willChange: 'transform' }}
                   >
                     <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
                     <span className="relative z-10">Get This Template</span>
@@ -406,7 +441,7 @@ export default function HomePage() {
             <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
               Why Choose <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Our Templates</span>
             </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">Our portfolio templates are designed with both aesthetics and functionality in mind.</p>
+            <p className="text-xl text-slate-700 max-w-2xl mx-auto">Our portfolio templates are designed with both aesthetics and functionality in mind.</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -419,24 +454,26 @@ export default function HomePage() {
                 key={idx}
                 className="p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg relative overflow-hidden"
                 variants={itemVariants}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                whileHover={{ y: -5 }}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, type: "spring", stiffness: 100, damping: 12 }}
+                viewport={{ once: true, margin: '-50px' }}
+                style={{ willChange: 'transform, opacity' }}
               >
                 <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-blue-500/10 rounded-full blur-xl"></div>
                 
                 <motion.div 
-                  className={`w-12 h-12 bg-${feature.color}-100 rounded-xl flex items-center justify-center mb-4`}
+                  className={`w-12 h-12 ${feature.color === 'blue' ? 'bg-blue-100' : feature.color === 'purple' ? 'bg-purple-100' : 'bg-pink-100'} rounded-xl flex items-center justify-center mb-4`}
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.5 }}
+                  style={{ willChange: 'transform' }}
                 >
-                  <feature.icon className={`w-6 h-6 text-${feature.color}-600`} />
+                  <feature.icon className={`w-6 h-6 ${feature.color === 'blue' ? 'text-blue-600' : feature.color === 'purple' ? 'text-purple-600' : 'text-pink-600'}`} />
                 </motion.div>
                 
                 <h3 className="text-xl font-bold text-slate-900 mb-2">{feature.title}</h3>
-                <p className="text-slate-600">{feature.desc}</p>
+                <p className="text-slate-700">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -449,8 +486,9 @@ export default function HomePage() {
           className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 text-white shadow-xl relative overflow-hidden"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+          viewport={{ once: true, margin: '-50px' }}
+          style={{ willChange: 'transform, opacity' }}
         >
           {/* Animated sparkles */}
           {[...Array(5)].map((_, i) => (
@@ -460,6 +498,7 @@ export default function HomePage() {
               style={{
                 top: `${20 + i * 15}%`,
                 left: `${10 + i * 20}%`,
+                willChange: 'transform, opacity'
               }}
               animate={{
                 scale: [0, 1, 0],
@@ -476,7 +515,8 @@ export default function HomePage() {
           <motion.h2 
             className="text-3xl lg:text-4xl font-bold mb-4"
             animate={{ scale: [1, 1.02, 1] }}
-            transition={{ duration: 3, repeat: Infinity }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            style={{ willChange: 'transform' }}
           >
             Ready to Create Your Portfolio?
           </motion.h2>
@@ -484,7 +524,8 @@ export default function HomePage() {
           <motion.p 
             className="text-blue-100 text-xl mb-8"
             animate={{ opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            style={{ willChange: 'opacity' }}
           >
             Get started today and showcase your work with a professional portfolio.
           </motion.p>
@@ -493,6 +534,8 @@ export default function HomePage() {
             className="group inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            style={{ willChange: 'transform' }}
           >
             <span className="absolute inset-0 bg-blue-600/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
             <span className="relative z-10">Get Started Now</span>
@@ -504,11 +547,12 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="relative z-10 max-w-7xl mx-auto px-6 py-8 text-center">
         <motion.p 
-          className="text-slate-600"
+          className="text-slate-700"
           animate={{ opacity: [0.7, 1, 0.7] }}
-          transition={{ duration: 4, repeat: Infinity }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          style={{ willChange: 'opacity' }}
         >
-          © {new Date().getFullYear()} PortfolioCraft. All rights reserved.
+          © {new Date().getFullYear()}. All rights reserved.
         </motion.p>
       </footer>
     </div>
