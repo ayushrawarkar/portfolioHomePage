@@ -44,7 +44,7 @@ export default function HomePage() {
   const scrollToSection = useCallback((id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ 
+      element.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
@@ -54,7 +54,7 @@ export default function HomePage() {
   // Throttle mousemove events for better performance
   useEffect(() => {
     let ticking = false;
-    
+
     const updateMouse = (e) => {
       if (!ticking) {
         requestAnimationFrame(() => {
@@ -64,9 +64,9 @@ export default function HomePage() {
         ticking = true;
       }
     };
-    
+
     window.addEventListener('mousemove', updateMouse, { passive: true });
-    
+
     return () => {
       window.removeEventListener('mousemove', updateMouse);
     };
@@ -78,14 +78,14 @@ export default function HomePage() {
     const handleType = () => {
       const current = currentTextIndex % rotatingTexts.length;
       const fullText = rotatingTexts[current];
-      
-      setCurrentText(isDeleting 
+
+      setCurrentText(isDeleting
         ? fullText.substring(0, currentText.length - 1)
         : fullText.substring(0, currentText.length + 1)
       );
-      
+
       setTypingSpeed(isDeleting ? 40 : 80);
-      
+
       if (!isDeleting && currentText === fullText) {
         timer = setTimeout(() => setIsDeleting(true), 700);
       } else if (isDeleting && currentText === '') {
@@ -93,9 +93,9 @@ export default function HomePage() {
         setCurrentTextIndex((current + 1) % rotatingTexts.length);
       }
     };
-    
+
     timer = setTimeout(handleType, typingSpeed);
-    
+
     return () => {
       clearTimeout(timer);
     };
@@ -115,15 +115,15 @@ export default function HomePage() {
 
   const itemVariants = {
     hidden: { y: 28, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1, 
-      transition: { 
-        type: 'spring', 
-        stiffness: 100, 
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 100,
         damping: 14,
         mass: 0.5
-      } 
+      }
     },
   };
 
@@ -211,7 +211,7 @@ export default function HomePage() {
 
   // Single client portfolio example
   const clientPortfolio = {
-    name: "Dr.Anup Ingale",
+    name: "Dr.Anup Ingle",
     role: "Assistant Professor At VIT Pune",
     website: "https://www.anupingle.com/",
     image: "https://www.anupingle.com/profile11.png",
@@ -228,8 +228,8 @@ export default function HomePage() {
       <div className="fixed inset-0 pointer-events-none" style={{ willChange: 'transform' }}>
         <motion.div
           className="absolute top-24 left-12 w-72 h-72 bg-gradient-to-r from-blue-200/30 to-purple-200/30 rounded-full blur-3xl"
-          style={{ 
-            x: mousePosition.x * 0.02, 
+          style={{
+            x: mousePosition.x * 0.02,
             y: mousePosition.y * 0.02,
             willChange: 'transform'
           }}
@@ -238,8 +238,8 @@ export default function HomePage() {
 
         <motion.div
           className="absolute top-1/3 right-16 w-96 h-96 bg-gradient-to-r from-pink-200/20 to-yellow-200/20 rounded-full blur-3xl"
-          style={{ 
-            x: mousePosition.x * -0.015, 
+          style={{
+            x: mousePosition.x * -0.015,
             y: mousePosition.y * -0.015,
             willChange: 'transform'
           }}
@@ -256,8 +256,8 @@ export default function HomePage() {
 
         <motion.div
           className="absolute bottom-24 left-1/3 w-80 h-80 bg-gradient-to-r from-green-200/25 to-blue-200/25 rounded-3xl blur-3xl"
-          style={{ 
-            x: mousePosition.x * 0.01, 
+          style={{
+            x: mousePosition.x * 0.01,
             y: mousePosition.y * 0.01,
             willChange: 'transform'
           }}
@@ -273,12 +273,12 @@ export default function HomePage() {
         />
 
         {/* Floating elements */}
-        <motion.div 
+        <motion.div
           className="absolute top-1/4 left-1/4 w-6 h-6 bg-blue-400/30 rounded-full"
           animate={floatingAnimation}
           style={{ willChange: 'transform' }}
         />
-        <motion.div 
+        <motion.div
           className="absolute top-2/3 left-1/5 w-4 h-4 bg-purple-400/30 rounded-full"
           animate={{
             y: [0, -10, 0],
@@ -291,7 +291,7 @@ export default function HomePage() {
           }}
           style={{ willChange: 'transform' }}
         />
-        <motion.div 
+        <motion.div
           className="absolute top-1/3 right-1/4 w-5 h-5 bg-pink-400/30 rounded-full"
           animate={{
             y: [0, -12, 0],
@@ -316,28 +316,28 @@ export default function HomePage() {
       >
         <div className="max-w-7xl mx-auto flex justify-center items-center">
           <div className="flex items-center space-x-12">
-            <motion.button 
-              onClick={() => scrollToSection('work')} 
-              className="text-slate-700 hover:text-blue-600 transition-colors duration-300 relative group" 
+            <motion.button
+              onClick={() => scrollToSection('work')}
+              className="text-slate-700 hover:text-blue-600 transition-colors duration-300 relative group"
               whileHover={{ y: -2 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Templates
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
             </motion.button>
-            <motion.button 
-              onClick={() => scrollToSection('about')} 
-              className="text-slate-700 hover:text-purple-600 transition-colors duration-300 relative group" 
+            <motion.button
+              onClick={() => scrollToSection('about')}
+              className="text-slate-700 hover:text-purple-600 transition-colors duration-300 relative group"
               whileHover={{ y: -2 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Features
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-600 transition-all duration-300 group-hover:w-full"></span>
             </motion.button>
-           
-            <motion.button 
-              onClick={() => scrollToSection('contact')} 
-              className="text-slate-700 hover:text-pink-600 transition-colors duration-300 relative group" 
+
+            <motion.button
+              onClick={() => scrollToSection('contact')}
+              className="text-slate-700 hover:text-pink-600 transition-colors duration-300 relative group"
               whileHover={{ y: -2 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
@@ -363,7 +363,7 @@ export default function HomePage() {
             </motion.span>
 
             {/* Fixed Typewriter Section */}
-            <motion.div 
+            <motion.div
               className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent inline-block min-h-[60px] sm:min-h-[80px] lg:min-h-[96px] overflow-visible"
               initial={{ backgroundPosition: '200% 0' }}
               animate={{ backgroundPosition: '0% 0' }}
@@ -383,18 +383,18 @@ export default function HomePage() {
             </motion.div>
           </motion.h1>
 
-          <motion.p 
-            className="text-lg sm:text-xl text-slate-700 leading-relaxed max-w-2xl mx-auto px-4" 
-            initial={{ opacity: 0, y: 16 }} 
-            animate={{ opacity: 1, y: 0 }} 
+          <motion.p
+            className="text-lg sm:text-xl text-slate-700 leading-relaxed max-w-2xl mx-auto px-4"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
             style={{ willChange: 'transform, opacity' }}
           >
             Get noticed with a stunning portfolio that showcases your best work. Our templates are designed to impress clients and employers while highlighting your unique talents and personality.
           </motion.p>
 
-          <motion.div 
-            className="flex flex-col sm:flex-row gap-4 justify-center mt-2 px-4" 
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center mt-2 px-4"
             variants={itemVariants}
           >
             <motion.button
@@ -450,8 +450,8 @@ export default function HomePage() {
                 style={{ willChange: 'transform, opacity' }}
               >
                 <div className="absolute -top-4 -right-4 w-24 h-24 bg-blue-500/10 rounded-full blur-xl"></div>
-                
-                <motion.div 
+
+                <motion.div
                   className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.5 }}
@@ -465,14 +465,14 @@ export default function HomePage() {
 
                 <div className="space-y-3 mb-6">
                   {service.features.map((f, i) => (
-                    <motion.div 
-                      key={i} 
+                    <motion.div
+                      key={i}
                       className="flex items-center text-sm text-slate-700"
                       whileHover={{ x: 5 }}
                       transition={{ type: "spring", stiffness: 300, damping: 10 }}
                       style={{ willChange: 'transform' }}
                     >
-                      <motion.div 
+                      <motion.div
                         className="w-2 h-2 bg-blue-500 rounded-full mr-3"
                         animate={{ scale: [1, 1.5, 1] }}
                         transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
@@ -485,9 +485,9 @@ export default function HomePage() {
 
                 <div className="border-t border-slate-200 pt-6">
                   <div className="text-2xl font-bold text-slate-900 mb-4">{service.price}</div>
-                  <motion.button 
+                  <motion.button
                     className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 relative overflow-hidden"
-                    whileHover={{ scale: 1.02 }} 
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                     style={{ willChange: 'transform' }}
@@ -518,7 +518,7 @@ export default function HomePage() {
               { icon: Smartphone, title: "Easy to Customize", desc: "Change colors, fonts, and layouts with simple configuration.", color: "purple" },
               { icon: Globe, title: "SEO Optimized", desc: "Built with best practices to help you rank higher in search results.", color: "pink" },
             ].map((feature, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 className="p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg relative overflow-hidden"
                 variants={itemVariants}
@@ -530,8 +530,8 @@ export default function HomePage() {
                 style={{ willChange: 'transform, opacity' }}
               >
                 <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-blue-500/10 rounded-full blur-xl"></div>
-                
-                <motion.div 
+
+                <motion.div
                   className={`w-12 h-12 ${feature.color === 'blue' ? 'bg-blue-100' : feature.color === 'purple' ? 'bg-purple-100' : 'bg-pink-100'} rounded-xl flex items-center justify-center mb-4`}
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.5 }}
@@ -539,7 +539,7 @@ export default function HomePage() {
                 >
                   <feature.icon className={`w-6 h-6 ${feature.color === 'blue' ? 'text-blue-600' : feature.color === 'purple' ? 'text-purple-600' : 'text-pink-600'}`} />
                 </motion.div>
-                
+
                 <h3 className="text-xl font-bold text-slate-900 mb-2">{feature.title}</h3>
                 <p className="text-slate-700">{feature.desc}</p>
               </motion.div>
@@ -574,8 +574,8 @@ export default function HomePage() {
                 style={{ willChange: 'transform, opacity' }}
               >
                 <div className="absolute -top-4 -right-4 w-20 h-20 bg-green-500/10 rounded-full blur-xl"></div>
-                
-                <motion.div 
+
+                <motion.div
                   className={`w-14 h-14 ${tech.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
                   whileHover={{ rotate: [0, -10, 10, 0] }}
                   transition={{ duration: 0.5 }}
@@ -583,11 +583,11 @@ export default function HomePage() {
                 >
                   <tech.icon className={`w-7 h-7 ${tech.color}`} />
                 </motion.div>
-                
+
                 <h3 className="text-xl font-bold text-slate-900 mb-2">{tech.name}</h3>
                 <p className="text-slate-700 text-sm leading-relaxed">{tech.description}</p>
-                
-                <motion.div 
+
+                <motion.div
                   className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-green-500 to-blue-500 group-hover:w-full transition-all duration-500"
                   initial={{ width: 0 }}
                   whileInView={{ width: '100%' }}
@@ -600,7 +600,7 @@ export default function HomePage() {
           </div>
 
           {/* Tech Highlights */}
-          <motion.div 
+          <motion.div
             className="mt-16 p-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-3xl border border-green-100/50 shadow-lg"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -609,7 +609,7 @@ export default function HomePage() {
             style={{ willChange: 'transform, opacity' }}
           >
             <div className="text-center max-w-3xl mx-auto">
-              <motion.h3 
+              <motion.h3
                 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-4"
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -618,11 +618,11 @@ export default function HomePage() {
                 Why This Tech Stack?
               </motion.h3>
               <p className="text-lg text-slate-700 mb-6 leading-relaxed">
-                We use Next.js for optimal performance and SEO, React for component-based architecture, 
-                TypeScript for type safety, Framer Motion for buttery-smooth animations, and Tailwind CSS 
+                We use Next.js for optimal performance and SEO, React for component-based architecture,
+                TypeScript for type safety, Framer Motion for buttery-smooth animations, and Tailwind CSS
                 for rapid, consistent styling. This combination ensures your portfolio is fast, maintainable, and beautiful.
               </p>
-              <motion.div 
+              <motion.div
                 className="flex flex-wrap justify-center gap-4"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -676,22 +676,35 @@ export default function HomePage() {
               <div className="relative bg-white/60 backdrop-blur-sm rounded-3xl border border-white/20 shadow-lg hover:shadow-2xl transition-all duration-500 p-8 text-center overflow-hidden">
                 {/* Background glow */}
                 <div className="absolute -top-8 -right-8 w-32 h-32 bg-orange-500/10 rounded-full blur-xl"></div>
-                
-                {/* Client Avatar Circle */}
-                <motion.div 
+
+                {/* Client Avatar Circle with Image */}
+                <motion.div
                   className="relative mx-auto mb-6 w-32 h-32 rounded-full bg-gradient-to-br from-orange-400 to-red-500 p-2 shadow-lg group-hover:shadow-xl transition-all duration-300"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
                   style={{ willChange: 'transform' }}
                 >
                   <div className="w-full h-full rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center overflow-hidden">
-                    <div className="w-28 h-28 rounded-full bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center text-orange-600 font-bold text-2xl">
+                    <img
+                      src={clientPortfolio.image}
+                      alt={clientPortfolio.name}
+                      className="w-full h-full rounded-full object-cover"
+                      onError={(e) => {
+                        // Fallback to initials if image fails to load
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                    {/* Fallback initials - hidden by default, shown if image fails */}
+                    <div
+                      className="w-full h-full rounded-full bg-gradient-to-br from-orange-100 to-red-100 hidden items-center justify-center text-orange-600 font-bold text-2xl"
+                    >
                       AI
                     </div>
                   </div>
-                  
+
                   {/* External link indicator */}
-                  <motion.div 
+                  <motion.div
                     className="absolute -top-2 -right-2 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center shadow-lg"
                     whileHover={{ scale: 1.2 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -704,23 +717,22 @@ export default function HomePage() {
                 {/* Client Info */}
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">{clientPortfolio.name}</h3>
                 <p className="text-orange-600 font-medium text-lg mb-4">{clientPortfolio.role}</p>
-                
+
                 {/* Rating */}
                 <div className="flex justify-center items-center mb-6">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-5 h-5 ${
-                        i < clientPortfolio.rating 
-                          ? 'fill-yellow-400 text-yellow-400' 
+                      className={`w-5 h-5 ${i < clientPortfolio.rating
+                          ? 'fill-yellow-400 text-yellow-400'
                           : 'fill-gray-300 text-gray-300'
-                      }`}
+                        }`}
                     />
                   ))}
                 </div>
 
                 {/* Click instruction */}
-                <motion.p 
+                <motion.p
                   className="text-slate-600 text-sm flex items-center justify-center gap-2"
                   animate={{ opacity: [0.7, 1, 0.7] }}
                   transition={{ duration: 2, repeat: Infinity }}
@@ -750,7 +762,7 @@ export default function HomePage() {
           </div>
 
           {/* Call to action */}
-          <motion.div 
+          <motion.div
             className="text-center mt-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -779,7 +791,7 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section id="contact" className="relative z-10 max-w-4xl mx-auto px-6 py-16 text-center">
-        <motion.div 
+        <motion.div
           className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-12 text-white shadow-xl relative overflow-hidden"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -808,8 +820,8 @@ export default function HomePage() {
               }}
             />
           ))}
-          
-          <motion.h2 
+
+          <motion.h2
             className="text-3xl lg:text-4xl font-bold mb-4"
             animate={{ scale: [1, 1.02, 1] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -817,8 +829,8 @@ export default function HomePage() {
           >
             Ready to Create Your Portfolio?
           </motion.h2>
-          
-          <motion.p 
+
+          <motion.p
             className="text-blue-100 text-xl mb-8"
             animate={{ opacity: [0.8, 1, 0.8] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -826,8 +838,8 @@ export default function HomePage() {
           >
             Get started today and showcase your work with a professional portfolio.
           </motion.p>
-          
-          <motion.button 
+
+          <motion.button
             className="group inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
@@ -843,7 +855,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="relative z-10 max-w-7xl mx-auto px-6 py-8 text-center">
-        <motion.p 
+        <motion.p
           className="text-slate-700"
           animate={{ opacity: [0.7, 1, 0.7] }}
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
