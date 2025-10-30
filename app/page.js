@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import {
   ChevronRight,
@@ -32,12 +32,13 @@ export default function HomePage() {
   const yShift = useTransform(scrollY, [0, 400], [0, 30]);
   const containerRef = useRef(null);
 
-  const rotatingTexts = [
+  // Fixed: Move rotatingTexts inside useMemo to prevent dependency changes
+  const rotatingTexts = useMemo(() => [
     "Professional Portfolio",
     "Stunning Website",
     "Creative Showcase",
     "Impressive Profile"
-  ];
+  ], []);
 
   // Fixed smooth scroll function
   const scrollToSection = useCallback((id) => {
@@ -333,7 +334,6 @@ export default function HomePage() {
               Features
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-600 transition-all duration-300 group-hover:w-full"></span>
             </motion.button>
-            
            
             <motion.button 
               onClick={() => scrollToSection('contact')} 
@@ -426,7 +426,6 @@ export default function HomePage() {
         </motion.div>
       </motion.header>
 
-      {/* Rest of your existing code remains the same */}
       {/* Services / Cards Section */}
       <main id="work" className="relative z-10 max-w-7xl mx-auto px-6 pb-12" style={{ paddingBottom: 48 }}>
         <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-120px' }}>
@@ -742,7 +741,7 @@ export default function HomePage() {
                   >
                     <p className="text-slate-800 text-base font-semibold flex items-center">
                       <ExternalLink className="w-4 h-4 mr-2" />
-                      Visit {clientPortfolio.name}'s Portfolio
+                      Visit {clientPortfolio.name}&apos;s Portfolio
                     </p>
                   </motion.div>
                 </div>
