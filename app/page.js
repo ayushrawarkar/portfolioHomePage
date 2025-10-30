@@ -333,24 +333,8 @@ export default function HomePage() {
               Features
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-600 transition-all duration-300 group-hover:w-full"></span>
             </motion.button>
-            <motion.button 
-              onClick={() => scrollToSection('tech')} 
-              className="text-slate-700 hover:text-green-600 transition-colors duration-300 relative group" 
-              whileHover={{ y: -2 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              Tech Stack
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-600 transition-all duration-300 group-hover:w-full"></span>
-            </motion.button>
-            <motion.button 
-              onClick={() => scrollToSection('example')} 
-              className="text-slate-700 hover:text-orange-600 transition-colors duration-300 relative group" 
-              whileHover={{ y: -2 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              View Work
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
-            </motion.button>
+            
+           
             <motion.button 
               onClick={() => scrollToSection('contact')} 
               className="text-slate-700 hover:text-pink-600 transition-colors duration-300 relative group" 
@@ -367,7 +351,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <motion.header className="relative z-10 max-w-4xl mx-auto px-6 pt-12 pb-12 text-center" variants={containerVariants} initial="hidden" animate="visible">
         <motion.div variants={itemVariants} className="space-y-6">
-          <motion.h1 className="text-5xl lg:text-7xl font-bold text-slate-900 leading-tight">
+          <motion.h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 leading-tight">
             <motion.span
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -378,19 +362,20 @@ export default function HomePage() {
               Stand Out With A{' '}
             </motion.span>
 
+            {/* Fixed Typewriter Section */}
             <motion.div 
-              className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent inline-block h-20 lg:h-24 overflow-hidden"
+              className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent inline-block min-h-[60px] sm:min-h-[80px] lg:min-h-[96px] overflow-visible"
               initial={{ backgroundPosition: '200% 0' }}
               animate={{ backgroundPosition: '0% 0' }}
               transition={{ duration: 1.8, ease: "easeInOut" }}
               style={{ willChange: 'background-position' }}
             >
-              <span className="block">
+              <span className="block h-full flex items-center justify-center">
                 {currentText}
                 <motion.span
                   animate={{ opacity: [0, 1, 0] }}
                   transition={{ duration: 0.8, repeat: Infinity }}
-                  className="ml-1 inline-block w-1 h-16 bg-current align-middle"
+                  className="ml-1 inline-block w-1 h-8 sm:h-12 lg:h-16 bg-current align-middle"
                 >
                   |
                 </motion.span>
@@ -399,7 +384,7 @@ export default function HomePage() {
           </motion.h1>
 
           <motion.p 
-            className="text-xl text-slate-700 leading-relaxed max-w-2xl mx-auto" 
+            className="text-lg sm:text-xl text-slate-700 leading-relaxed max-w-2xl mx-auto px-4" 
             initial={{ opacity: 0, y: 16 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ delay: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -409,38 +394,39 @@ export default function HomePage() {
           </motion.p>
 
           <motion.div 
-            className="flex flex-col sm:flex-row gap-4 justify-center mt-2" 
+            className="flex flex-col sm:flex-row gap-4 justify-center mt-2 px-4" 
             variants={itemVariants}
           >
             <motion.button
-              className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+              className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => scrollToSection('work')}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-              <Palette className="w-5 h-5 mr-2 relative z-10" />
-              <span className="relative z-10">Create Your Portfolio</span>
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
+              <Palette className="w-4 h-4 sm:w-5 sm:h-5 mr-2 relative z-10" />
+              <span className="relative z-10 text-sm sm:text-base">Create Your Portfolio</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
             </motion.button>
 
             <motion.button
-              className="group inline-flex items-center px-8 py-4 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold rounded-2xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+              className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold rounded-2xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => scrollToSection('contact')}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <span className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-              <Code className="w-5 h-5 mr-2 relative z-10" />
-              <span className="relative z-10">View All Templates</span>
-              <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
+              <Code className="w-4 h-4 sm:w-5 sm:h-5 mr-2 relative z-10" />
+              <span className="relative z-10 text-sm sm:text-base">View All Templates</span>
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
             </motion.button>
           </motion.div>
         </motion.div>
       </motion.header>
 
+      {/* Rest of your existing code remains the same */}
       {/* Services / Cards Section */}
       <main id="work" className="relative z-10 max-w-7xl mx-auto px-6 pb-12" style={{ paddingBottom: 48 }}>
         <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-120px' }}>
@@ -733,9 +719,6 @@ export default function HomePage() {
                     />
                   ))}
                 </div>
-
-                {/* Description */}
-               
 
                 {/* Click instruction */}
                 <motion.p 
