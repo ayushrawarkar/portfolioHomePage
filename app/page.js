@@ -12,6 +12,14 @@ import {
   Briefcase,
   Globe,
   Sparkles,
+  Cpu,
+  Type,
+  Zap,
+  Palette as FramerIcon,
+  Wind,
+  GitBranch,
+  ExternalLink,
+  Star,
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -19,7 +27,7 @@ export default function HomePage() {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(80); // Increased speed from 150 to 80
+  const [typingSpeed, setTypingSpeed] = useState(80);
   const { scrollY } = useScroll();
   const yShift = useTransform(scrollY, [0, 400], [0, 30]);
   const containerRef = useRef(null);
@@ -35,7 +43,6 @@ export default function HomePage() {
   const scrollToSection = useCallback((id) => {
     const element = document.getElementById(id);
     if (element) {
-      // Using modern smooth scroll API
       element.scrollIntoView({ 
         behavior: 'smooth',
         block: 'start'
@@ -76,10 +83,9 @@ export default function HomePage() {
         : fullText.substring(0, currentText.length + 1)
       );
       
-      setTypingSpeed(isDeleting ? 40 : 80); // Increased speed from 75/150 to 40/80
+      setTypingSpeed(isDeleting ? 40 : 80);
       
       if (!isDeleting && currentText === fullText) {
-        // Pause at end of typing (reduced from 1000 to 700)
         timer = setTimeout(() => setIsDeleting(true), 700);
       } else if (isDeleting && currentText === '') {
         setIsDeleting(false);
@@ -155,6 +161,65 @@ export default function HomePage() {
       features: ['Code Display', 'Project Showcases', 'Skills Visualization', 'GitHub Integration'],
     },
   ];
+
+  // Tech stack data with correct icons
+  const techStack = [
+    {
+      name: 'Next.js',
+      description: 'React framework for production-grade applications with server-side rendering',
+      icon: Cpu,
+      color: 'text-black',
+      bgColor: 'bg-black/5',
+    },
+    {
+      name: 'React',
+      description: 'Library for building user interfaces with reusable components',
+      icon: Zap,
+      color: 'text-blue-500',
+      bgColor: 'bg-blue-500/5',
+    },
+    {
+      name: 'TypeScript',
+      description: 'Typed JavaScript for better developer experience and code quality',
+      icon: Type,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-600/5',
+    },
+    {
+      name: 'Framer Motion',
+      description: 'Production-ready motion library for smooth animations and interactions',
+      icon: FramerIcon,
+      color: 'text-purple-500',
+      bgColor: 'bg-purple-500/5',
+    },
+    {
+      name: 'Tailwind CSS',
+      description: 'Utility-first CSS framework for rapid UI development',
+      icon: Wind,
+      color: 'text-cyan-500',
+      bgColor: 'bg-cyan-500/5',
+    },
+    {
+      name: 'Git & Vercel',
+      description: 'Version control and seamless deployment for modern web applications',
+      icon: GitBranch,
+      color: 'text-orange-500',
+      bgColor: 'bg-orange-500/5',
+    },
+  ];
+
+  // Single client portfolio example
+  const clientPortfolio = {
+    name: "Dr.Anup Ingale",
+    role: "Assistant Professor At VIT Pune",
+    website: "https://www.anupingle.com/",
+    image: "https://www.anupingle.com/profile11.png",
+    rating: 5,
+  };
+
+  const handleClientClick = () => {
+    window.open(clientPortfolio.website, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden" ref={containerRef}>
@@ -245,7 +310,7 @@ export default function HomePage() {
         className="relative z-50 p-6"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} // Custom ease for smoother animation
+        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
         style={{ willChange: 'transform, opacity' }}
       >
         <div className="max-w-7xl mx-auto flex justify-center items-center">
@@ -267,6 +332,24 @@ export default function HomePage() {
             >
               Features
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-600 transition-all duration-300 group-hover:w-full"></span>
+            </motion.button>
+            <motion.button 
+              onClick={() => scrollToSection('tech')} 
+              className="text-slate-700 hover:text-green-600 transition-colors duration-300 relative group" 
+              whileHover={{ y: -2 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              Tech Stack
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-600 transition-all duration-300 group-hover:w-full"></span>
+            </motion.button>
+            <motion.button 
+              onClick={() => scrollToSection('example')} 
+              className="text-slate-700 hover:text-orange-600 transition-colors duration-300 relative group" 
+              whileHover={{ y: -2 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              View Work
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
             </motion.button>
             <motion.button 
               onClick={() => scrollToSection('contact')} 
@@ -480,6 +563,238 @@ export default function HomePage() {
         </motion.div>
       </section>
 
+      {/* Tech Stack Section */}
+      <section id="tech" className="relative z-10 max-w-7xl mx-auto px-6 py-16">
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-120px' }}>
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+              Built With <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">Modern Tech</span>
+            </h2>
+            <p className="text-xl text-slate-700 max-w-2xl mx-auto">
+              Our templates leverage the latest technologies to ensure performance, scalability, and an amazing user experience.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {techStack.map((tech, idx) => (
+              <motion.div
+                key={idx}
+                className="group p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+                variants={itemVariants}
+                whileHover={{ y: -5, scale: 1.02 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1, type: "spring", stiffness: 100, damping: 12 }}
+                viewport={{ once: true, margin: '-50px' }}
+                style={{ willChange: 'transform, opacity' }}
+              >
+                <div className="absolute -top-4 -right-4 w-20 h-20 bg-green-500/10 rounded-full blur-xl"></div>
+                
+                <motion.div 
+                  className={`w-14 h-14 ${tech.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                  whileHover={{ rotate: [0, -10, 10, 0] }}
+                  transition={{ duration: 0.5 }}
+                  style={{ willChange: 'transform' }}
+                >
+                  <tech.icon className={`w-7 h-7 ${tech.color}`} />
+                </motion.div>
+                
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{tech.name}</h3>
+                <p className="text-slate-700 text-sm leading-relaxed">{tech.description}</p>
+                
+                <motion.div 
+                  className="absolute bottom-0 left-0 w-0 h-1 bg-gradient-to-r from-green-500 to-blue-500 group-hover:w-full transition-all duration-500"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '100%' }}
+                  transition={{ delay: idx * 0.1 + 0.3, duration: 0.8 }}
+                  viewport={{ once: true }}
+                  style={{ willChange: 'width' }}
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Tech Highlights */}
+          <motion.div 
+            className="mt-16 p-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-3xl border border-green-100/50 shadow-lg"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-50px' }}
+            style={{ willChange: 'transform, opacity' }}
+          >
+            <div className="text-center max-w-3xl mx-auto">
+              <motion.h3 
+                className="text-2xl lg:text-3xl font-bold text-slate-900 mb-4"
+                animate={{ scale: [1, 1.02, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                style={{ willChange: 'transform' }}
+              >
+                Why This Tech Stack?
+              </motion.h3>
+              <p className="text-lg text-slate-700 mb-6 leading-relaxed">
+                We use Next.js for optimal performance and SEO, React for component-based architecture, 
+                TypeScript for type safety, Framer Motion for buttery-smooth animations, and Tailwind CSS 
+                for rapid, consistent styling. This combination ensures your portfolio is fast, maintainable, and beautiful.
+              </p>
+              <motion.div 
+                className="flex flex-wrap justify-center gap-4"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.5, staggerChildren: 0.1 }}
+                viewport={{ once: true }}
+                style={{ willChange: 'opacity' }}
+              >
+                {['⚡ Blazing Fast', '🎨 Beautiful Animations', '📱 Fully Responsive', '🔍 SEO Optimized', '🛠 Easy to Maintain'].map((item, i) => (
+                  <motion.span
+                    key={i}
+                    className="px-4 py-2 bg-white/80 backdrop-blur-sm text-slate-700 rounded-full text-sm font-medium shadow-sm"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    style={{ willChange: 'transform' }}
+                  >
+                    {item}
+                  </motion.span>
+                ))}
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Single Client Portfolio Example Section */}
+      <section id="example" className="relative z-10 max-w-4xl mx-auto px-6 py-16">
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-120px' }}>
+          <motion.div variants={itemVariants} className="text-center mb-12">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
+              See Our <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Work Example</span>
+            </h2>
+            <p className="text-xl text-slate-700 max-w-2xl mx-auto">
+              Check out this stunning portfolio we created for a professional developer.
+            </p>
+          </motion.div>
+
+          {/* Single Client Card - Centered */}
+          <div className="flex justify-center">
+            <motion.div
+              className="group cursor-pointer max-w-sm w-full"
+              variants={itemVariants}
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 100, damping: 12 }}
+              viewport={{ once: true, margin: '-50px' }}
+              onClick={handleClientClick}
+              style={{ willChange: 'transform, opacity' }}
+            >
+              <div className="relative bg-white/60 backdrop-blur-sm rounded-3xl border border-white/20 shadow-lg hover:shadow-2xl transition-all duration-500 p-8 text-center overflow-hidden">
+                {/* Background glow */}
+                <div className="absolute -top-8 -right-8 w-32 h-32 bg-orange-500/10 rounded-full blur-xl"></div>
+                
+                {/* Client Avatar Circle */}
+                <motion.div 
+                  className="relative mx-auto mb-6 w-32 h-32 rounded-full bg-gradient-to-br from-orange-400 to-red-500 p-2 shadow-lg group-hover:shadow-xl transition-all duration-300"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                  style={{ willChange: 'transform' }}
+                >
+                  <div className="w-full h-full rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center overflow-hidden">
+                    <div className="w-28 h-28 rounded-full bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center text-orange-600 font-bold text-2xl">
+                      AI
+                    </div>
+                  </div>
+                  
+                  {/* External link indicator */}
+                  <motion.div 
+                    className="absolute -top-2 -right-2 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center shadow-lg"
+                    whileHover={{ scale: 1.2 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    style={{ willChange: 'transform' }}
+                  >
+                    <ExternalLink className="w-4 h-4 text-white" />
+                  </motion.div>
+                </motion.div>
+
+                {/* Client Info */}
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">{clientPortfolio.name}</h3>
+                <p className="text-orange-600 font-medium text-lg mb-4">{clientPortfolio.role}</p>
+                
+                {/* Rating */}
+                <div className="flex justify-center items-center mb-6">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-5 h-5 ${
+                        i < clientPortfolio.rating 
+                          ? 'fill-yellow-400 text-yellow-400' 
+                          : 'fill-gray-300 text-gray-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                {/* Description */}
+               
+
+                {/* Click instruction */}
+                <motion.p 
+                  className="text-slate-600 text-sm flex items-center justify-center gap-2"
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  style={{ willChange: 'opacity' }}
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Click to visit portfolio website
+                </motion.p>
+
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileHover={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                    className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg"
+                    style={{ willChange: 'transform, opacity' }}
+                  >
+                    <p className="text-slate-800 text-base font-semibold flex items-center">
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Visit {clientPortfolio.name}'s Portfolio
+                    </p>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Call to action */}
+          <motion.div 
+            className="text-center mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: true }}
+            style={{ willChange: 'transform, opacity' }}
+          >
+            <p className="text-lg text-slate-700 mb-6">
+              Ready to have a portfolio like this?
+            </p>
+            <motion.button
+              className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => scrollToSection('contact')}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              style={{ willChange: 'transform' }}
+            >
+              <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+              <span className="relative z-10">Get Your Portfolio Now</span>
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300 relative z-10" />
+            </motion.button>
+          </motion.div>
+        </motion.div>
+      </section>
+
       {/* CTA Section */}
       <section id="contact" className="relative z-10 max-w-4xl mx-auto px-6 py-16 text-center">
         <motion.div 
@@ -552,7 +867,7 @@ export default function HomePage() {
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           style={{ willChange: 'opacity' }}
         >
-          © {new Date().getFullYear()}. All rights reserved.
+          © {new Date().getFullYear()}. Creater Reasearch All rights reserved.
         </motion.p>
       </footer>
     </div>
