@@ -20,9 +20,13 @@ import {
   GitBranch,
   ExternalLink,
   Star,
+  Users,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
+  const router = useRouter(); // ✅ Move useRouter inside the component function
+  
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
@@ -142,23 +146,20 @@ export default function HomePage() {
       description:
         'Elegant personal portfolio websites designed to showcase your work, skills, and experience in a visually compelling way.',
       icon: Briefcase,
-      price: 'Starting at $1,299',
       features: ['Responsive Design', 'Project Gallery', 'About Section', 'Contact Form'],
     },
     {
-      title: 'Creative Portfolio',
+      title: 'Community Portfolio',
       description:
-        'Artistic and visually striking portfolios for designers, artists, and creatives to display their work with maximum impact.',
-      icon: Palette,
-      price: 'Starting at $1,899',
-      features: ['Custom Animations', 'Image Galleries', 'Interactive Elements', 'Visual Storytelling'],
+        'Collaborative platforms for communities, teams, and groups to showcase collective work and achievements together.',
+      icon: Users,
+      features: ['Member Profiles', 'Collaborative Spaces', 'Team Showcases', 'Community Engagement'],
     },
     {
       title: 'Developer Portfolio',
       description:
         'Clean, technical portfolios for developers to showcase projects, code samples, and technical skills effectively.',
       icon: Code,
-      price: 'Starting at $1,599',
       features: ['Code Display', 'Project Showcases', 'Skills Visualization', 'GitHub Integration'],
     },
   ];
@@ -414,7 +415,7 @@ export default function HomePage() {
               className="group inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold rounded-2xl border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => scrollToSection('contact')}
+              onClick={() => router.push('/templates')}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <span className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
@@ -483,19 +484,7 @@ export default function HomePage() {
                   ))}
                 </div>
 
-                <div className="border-t border-slate-200 pt-6">
-                  <div className="text-2xl font-bold text-slate-900 mb-4">{service.price}</div>
-                  <motion.button
-                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 relative overflow-hidden"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    style={{ willChange: 'transform' }}
-                  >
-                    <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-                    <span className="relative z-10">Get This Template</span>
-                  </motion.button>
-                </div>
+               
               </motion.article>
             ))}
           </div>
