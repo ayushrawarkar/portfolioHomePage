@@ -200,7 +200,7 @@ export default function HomePage() {
   ];
 
   const clientPortfolio = {
-    name: "Dr.Anup Ingle",
+    name: "Dr. Anup Ingle",
     role: "Assistant Professor At VIT Pune",
     website: "https://www.anupingle.com/",
     image: "https://www.anupingle.com/profile11.png",
@@ -525,6 +525,7 @@ export default function HomePage() {
                   whileHover={{ rotate: 360 }}
                 >
                   <div className="w-full h-full rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center overflow-hidden">
+                    {/* Using img tag instead of Next Image for external URL */}
                     <img
                       src={clientPortfolio.image}
                       alt={clientPortfolio.name}
@@ -610,6 +611,7 @@ export default function HomePage() {
             className="group inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => router.push('/templates')}
           >
             <span className="absolute inset-0 bg-blue-600/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
             <span className="relative z-10">Get Started Now</span>
@@ -621,7 +623,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="relative z-10 max-w-7xl mx-auto px-6 py-8 text-center">
         <p className="text-slate-700">
-          © {new Date().getFullYear()}. Creater Reasearch All rights reserved.
+          © {new Date().getFullYear()}. Creator Research. All rights reserved.
         </p>
       </footer>
     </div>

@@ -2,15 +2,15 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Star, Users, Briefcase, Code, MessageCircle, ChevronLeft, Home, Settings, Zap, Crown } from 'lucide-react';
+import { ExternalLink, Star, Users, Briefcase, Code, MessageCircle, Home, Settings, Zap, Crown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 export default function TemplatesPage() {
   const router = useRouter();
   const [hoveredCard, setHoveredCard] = useState(null);
-  
-  // Template data with actual image paths
+
+  // Template data with corrected image paths
   const templates = [
     {
       id: 1,
@@ -18,7 +18,7 @@ export default function TemplatesPage() {
       description: 'Clean and professional portfolio template perfect for developers, engineers, and tech professionals.',
       category: 'Developer',
       icon: Code,
-      image: '/images/templates/templateimage1.jpg',
+      image: '/images/templates/templateimage1.jpg', // Remove /public
       liveUrl: 'https://academic-portfolio-ivory-theta.vercel.app/',
       features: ['Code Display', 'Project Showcase', 'Skills Section'],
       rating: 5,
@@ -29,7 +29,7 @@ export default function TemplatesPage() {
       description: 'Elegant portfolio template designed for designers, artists, and creative professionals.',
       category: 'Creative',
       icon: Users,
-      image: '/images/templates/template2.jpg',
+      image: '/images/templates/template2.jpg', // Remove /public
       liveUrl: 'https://profile-template-iota.vercel.app/',
       features: ['Gallery Layout', 'Animation Ready', 'Client Testimonials', 'Contact Form'],
       rating: 4,
@@ -40,8 +40,8 @@ export default function TemplatesPage() {
       description: 'Professional template suitable for consultants, freelancers, and business professionals.',
       category: 'Business',
       icon: Briefcase,
-      image: '/images/templates/template3.jpg',
-      liveUrl: 'https://example.com', // FIXED: Added live URL
+      image: '/images/templates/template3.jpg', // Added consistent path
+      liveUrl: 'https://example.com',
       features: ['Service Sections', 'Case Studies', 'Team Members', 'Pricing Tables'],
       rating: 5,
     }
@@ -111,10 +111,6 @@ export default function TemplatesPage() {
     }
   };
 
-  const handleBackClick = () => {
-    router.back();
-  };
-
   const handleHomeClick = () => {
     router.push('/');
   };
@@ -163,9 +159,6 @@ export default function TemplatesPage() {
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            {/* FIXED: Added back button */}
-           
-
             <motion.button
               onClick={handleHomeClick}
               className="group flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden"
@@ -177,7 +170,7 @@ export default function TemplatesPage() {
               <span className="relative z-10">Home</span>
             </motion.button>
           </div>
-          
+
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -229,20 +222,33 @@ export default function TemplatesPage() {
                   {/* Template Image */}
                   <div className="relative h-48 bg-gray-100 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-                    
+
+                    {/* Actual Image Display */}
                     <div className="w-full h-full relative">
                       <Image
                         src={template.image}
                         alt={template.title}
                         fill
                         className="object-cover"
+                        onError={(e) => {
+                          // Fallback if image doesn't exist
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
                       />
+                      {/* Fallback content */}
+                      <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center hidden">
+                        <div className="text-center">
+                          <template.icon className="w-16 h-16 text-blue-600 mx-auto mb-2" />
+                          <p className="text-blue-800 font-medium">{template.title}</p>
+                        </div>
+                      </div>
                     </div>
 
                     <motion.div
                       className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg z-20"
                       initial={{ scale: 0, opacity: 0 }}
-                      animate={{ 
+                      animate={{
                         scale: hoveredCard === template.id ? 1 : 0,
                         opacity: hoveredCard === template.id ? 1 : 0
                       }}
@@ -340,7 +346,7 @@ export default function TemplatesPage() {
               Want Something <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Completely Custom?</span>
             </h2>
             <p className="text-xl text-slate-700 max-w-3xl mx-auto leading-relaxed">
-              Don't see exactly what you're looking for? We'll create a bespoke portfolio tailored to your unique style and requirements.
+              Don&apos;t see exactly what you&apos;re looking for? We&apos;ll create a bespoke portfolio tailored to your unique style and requirements.
             </p>
           </div>
 
@@ -365,17 +371,15 @@ export default function TemplatesPage() {
                     </div>
                   </div>
                 )}
-                
+
                 <motion.div
-                  className={`bg-white/70 backdrop-blur-lg rounded-3xl border-2 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 relative ${
-                    pkg.popular ? 'border-orange-400 scale-105' : 'border-white/40'
-                  }`}
+                  className={`bg-white/70 backdrop-blur-lg rounded-3xl border-2 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 relative ${pkg.popular ? 'border-orange-400 scale-105' : 'border-white/40'
+                    }`}
                   whileHover={{ y: -5, scale: pkg.popular ? 1.08 : 1.02 }}
                 >
                   {/* Package Header */}
-                  <div className={`p-8 text-center ${
-                    pkg.popular ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-blue-600 to-purple-600'
-                  }`}>
+                  <div className={`p-8 text-center ${pkg.popular ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-blue-600 to-purple-600'
+                    }`}>
                     <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
                       <pkg.icon className={`w-8 h-8 ${pkg.popular ? 'text-orange-100' : 'text-blue-100'}`} />
                     </div>
@@ -391,13 +395,12 @@ export default function TemplatesPage() {
                     <p className="text-slate-600 mb-6 text-center leading-relaxed">
                       {pkg.description}
                     </p>
-                    
+
                     <div className="space-y-3 mb-8">
                       {pkg.features.map((feature, idx) => (
                         <div key={idx} className="flex items-center text-sm text-slate-700">
-                          <div className={`w-2 h-2 rounded-full mr-3 ${
-                            pkg.popular ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-blue-500 to-purple-500'
-                          }`} />
+                          <div className={`w-2 h-2 rounded-full mr-3 ${pkg.popular ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-blue-500 to-purple-500'
+                            }`} />
                           {feature}
                         </div>
                       ))}
@@ -405,11 +408,10 @@ export default function TemplatesPage() {
 
                     {/* CTA Button */}
                     <motion.button
-                      className={`w-full py-4 font-semibold rounded-xl hover:shadow-lg transition-all duration-300 relative overflow-hidden group/btn ${
-                        pkg.popular
+                      className={`w-full py-4 font-semibold rounded-xl hover:shadow-lg transition-all duration-300 relative overflow-hidden group/btn ${pkg.popular
                           ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white'
                           : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                      }`}
+                        }`}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleCustomContact(pkg)}
