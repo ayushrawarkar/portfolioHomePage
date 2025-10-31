@@ -9,38 +9,39 @@ import Image from 'next/image';
 export default function TemplatesPage() {
   const router = useRouter();
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [imageErrors, setImageErrors] = useState({});
 
   // Template data with corrected image paths
   const templates = [
     {
       id: 1,
-      title: 'Portfolio Template 1',
+      title: 'Developer Portfolio',
       description: 'Clean and professional portfolio template perfect for developers, engineers, and tech professionals.',
       category: 'Developer',
       icon: Code,
-      image: '/images/templates/templateimage1.jpg', // Remove /public
+      image: '/images/templates/templateimage1.jpg',
       liveUrl: 'https://academic-portfolio-ivory-theta.vercel.app/',
-      features: ['Code Display', 'Project Showcase', 'Skills Section'],
+      features: ['Code Display', 'Project Showcase', 'Skills Section', 'GitHub Integration'],
       rating: 5,
     },
     {
       id: 2,
-      title: 'Portfolio Template 2',
+      title: 'Creative Portfolio',
       description: 'Elegant portfolio template designed for designers, artists, and creative professionals.',
       category: 'Creative',
       icon: Users,
-      image: '/images/templates/template2.jpg', // Remove /public
+      image: '/images/templates/template2.jpg',
       liveUrl: 'https://profile-template-iota.vercel.app/',
       features: ['Gallery Layout', 'Animation Ready', 'Client Testimonials', 'Contact Form'],
       rating: 4,
     },
     {
       id: 3,
-      title: 'Portfolio Template 3',
+      title: 'Business Portfolio',
       description: 'Professional template suitable for consultants, freelancers, and business professionals.',
       category: 'Business',
       icon: Briefcase,
-      image: '/images/templates/template3.jpg', // Added consistent path
+      image: '/images/templates/template3.jpg',
       liveUrl: 'https://example.com',
       features: ['Service Sections', 'Case Studies', 'Team Members', 'Pricing Tables'],
       rating: 5,
@@ -106,7 +107,7 @@ export default function TemplatesPage() {
   ];
 
   const handleTemplateClick = (url) => {
-    if (url) {
+    if (url && url !== 'https://example.com') {
       window.open(url, '_blank', 'noopener,noreferrer');
     }
   };
@@ -121,6 +122,10 @@ export default function TemplatesPage() {
 
   const handleCustomContact = (pkg) => {
     router.push('/#contact');
+  };
+
+  const handleImageError = (templateId) => {
+    setImageErrors(prev => ({ ...prev, [templateId]: true }));
   };
 
   // Animation variants
@@ -223,26 +228,25 @@ export default function TemplatesPage() {
                   <div className="relative h-48 bg-gray-100 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
 
-                    {/* Actual Image Display */}
+                    {/* Image with fallback */}
                     <div className="w-full h-full relative">
-                      <Image
-                        src={template.image}
-                        alt={template.title}
-                        fill
-                        className="object-cover"
-                        onError={(e) => {
-                          // Fallback if image doesn't exist
-                          e.target.style.display = 'none';
-                          e.target.nextSibling.style.display = 'flex';
-                        }}
-                      />
-                      {/* Fallback content */}
-                      <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center hidden">
-                        <div className="text-center">
-                          <template.icon className="w-16 h-16 text-blue-600 mx-auto mb-2" />
-                          <p className="text-blue-800 font-medium">{template.title}</p>
+                      {!imageErrors[template.id] ? (
+                        <Image
+                          src={template.image}
+                          alt={template.title}
+                          fill
+                          className="object-cover"
+                          onError={() => handleImageError(template.id)}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                          <div className="text-center">
+                            <template.icon className="w-16 h-16 text-blue-600 mx-auto mb-2" />
+                            <p className="text-blue-800 font-medium">{template.title}</p>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
 
                     <motion.div
