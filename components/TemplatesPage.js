@@ -11,7 +11,7 @@ export default function TemplatesPage() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [imageErrors, setImageErrors] = useState({});
 
-  // Template data with corrected image paths
+  // Template data with external image URLs for deployment
   const templates = [
     {
       id: 1,
@@ -19,7 +19,7 @@ export default function TemplatesPage() {
       description: 'Clean and professional portfolio template perfect for developers, engineers, and tech professionals.',
       category: 'Developer',
       icon: Code,
-      image: '/images/templates/templateimage1.jpg',
+      image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop',
       liveUrl: 'https://academic-portfolio-ivory-theta.vercel.app/',
       features: ['Code Display', 'Project Showcase', 'Skills Section', 'GitHub Integration'],
       rating: 5,
@@ -30,7 +30,7 @@ export default function TemplatesPage() {
       description: 'Elegant portfolio template designed for designers, artists, and creative professionals.',
       category: 'Creative',
       icon: Users,
-      image: '/images/templates/template2.jpg',
+      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop',
       liveUrl: 'https://profile-template-iota.vercel.app/',
       features: ['Gallery Layout', 'Animation Ready', 'Client Testimonials', 'Contact Form'],
       rating: 4,
@@ -41,7 +41,7 @@ export default function TemplatesPage() {
       description: 'Professional template suitable for consultants, freelancers, and business professionals.',
       category: 'Business',
       icon: Briefcase,
-      image: '/images/templates/template3.jpg',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
       liveUrl: 'https://example.com',
       features: ['Service Sections', 'Case Studies', 'Team Members', 'Pricing Tables'],
       rating: 5,
@@ -238,6 +238,7 @@ export default function TemplatesPage() {
                           className="object-cover"
                           onError={() => handleImageError(template.id)}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          priority={index === 0}
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
