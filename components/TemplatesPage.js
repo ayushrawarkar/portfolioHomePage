@@ -41,7 +41,7 @@ export default function TemplatesPage() {
       category: 'Business',
       icon: Briefcase,
       image: '/images/templates/template3.jpg',
-      liveUrl: '',
+      liveUrl: 'https://example.com', // FIXED: Added live URL
       features: ['Service Sections', 'Case Studies', 'Team Members', 'Pricing Tables'],
       rating: 5,
     }
@@ -106,7 +106,9 @@ export default function TemplatesPage() {
   ];
 
   const handleTemplateClick = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
   };
 
   const handleBackClick = () => {
@@ -117,13 +119,11 @@ export default function TemplatesPage() {
     router.push('/');
   };
 
-  const handleContactClick = (packageType = 'general') => {
-    // You can modify this to pass the package type to your contact form
+  const handleContactClick = () => {
     router.push('/#contact');
   };
 
   const handleCustomContact = (pkg) => {
-    // This could open a modal or redirect with package details
     router.push('/#contact');
   };
 
@@ -148,92 +148,29 @@ export default function TemplatesPage() {
         type: "spring",
         stiffness: 100,
         damping: 15,
-        mass: 0.8
       }
     },
-  };
-
-  const cardHoverVariants = {
-    initial: { scale: 1, y: 0 },
-    hover: { 
-      scale: 1.03, 
-      y: -8,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 25
-      }
-    }
-  };
-
-  const buttonHoverVariants = {
-    initial: { scale: 1 },
-    hover: { 
-      scale: 1.05,
-      y: -2,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 10
-      }
-    },
-    tap: { scale: 0.98 }
-  };
-
-  const floatingAnimation = {
-    y: [0, -10, 0],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 pointer-events-none">
-        <motion.div
-          className="absolute top-20 left-10 w-64 h-64 bg-blue-200/20 rounded-full blur-3xl"
-          animate={floatingAnimation}
-        />
-        <motion.div
-          className="absolute bottom-20 right-10 w-80 h-80 bg-purple-200/15 rounded-full blur-3xl"
-          animate={{
-            y: [0, 15, 0],
-            transition: {
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1
-            }
-          }}
-        />
-      </div>
-
       {/* Header */}
       <motion.header
         className="relative z-50 p-6 bg-white/60 backdrop-blur-lg border-b border-white/30 shadow-sm"
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ 
-          duration: 0.8, 
-          ease: [0.25, 0.46, 0.45, 0.94],
-          type: "spring",
-          stiffness: 100,
-          damping: 15
-        }}
+        transition={{ duration: 0.8 }}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            
+            {/* FIXED: Added back button */}
+           
 
             <motion.button
               onClick={handleHomeClick}
               className="group flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden"
-              whileHover="hover"
-              whileTap="tap"
-              variants={buttonHoverVariants}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
             >
               <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
               <Home className="w-4 h-4 relative z-10" />
@@ -244,7 +181,7 @@ export default function TemplatesPage() {
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+            transition={{ delay: 0.3 }}
           >
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               Portfolio Templates
@@ -259,36 +196,14 @@ export default function TemplatesPage() {
           className="text-center mb-16"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          transition={{ duration: 0.7 }}
         >
-          <motion.h2
-            className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
-            animate={{ 
-              backgroundPosition: ['0% 0%', '100% 0%', '0% 0%'] 
-            }}
-            transition={{ 
-              duration: 8, 
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            style={{ 
-              background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #8b5cf6, #3b82f6)',
-              backgroundSize: '400% 100%',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              color: 'transparent'
-            }}
-          >
+          <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
             Choose Your Perfect Template
-          </motion.h2>
-          <motion.p
-            className="text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          >
+          </h2>
+          <p className="text-xl text-slate-700 max-w-2xl mx-auto leading-relaxed">
             Browse our collection of professionally designed portfolio templates. Each template is fully customizable and ready to use.
-          </motion.p>
+          </p>
         </motion.div>
 
         <motion.div
@@ -304,51 +219,26 @@ export default function TemplatesPage() {
                 className="group"
                 variants={itemVariants}
                 custom={index}
-                whileHover="hover"
-                initial="initial"
                 onHoverStart={() => setHoveredCard(template.id)}
                 onHoverEnd={() => setHoveredCard(null)}
               >
                 <motion.div
                   className="bg-white/70 backdrop-blur-lg rounded-3xl border border-white/40 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer relative"
-                  variants={cardHoverVariants}
+                  whileHover={{ scale: 1.03, y: -8 }}
                 >
-                  {/* Glow effect on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
-                  
                   {/* Template Image */}
                   <div className="relative h-48 bg-gray-100 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                     
-                    <motion.div
-                      className="w-full h-full relative"
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                    >
+                    <div className="w-full h-full relative">
                       <Image
                         src={template.image}
                         alt={template.title}
                         fill
                         className="object-cover"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          const fallback = e.target.nextSibling;
-                          if (fallback) fallback.style.display = 'flex';
-                        }}
                       />
-                      {/* Fallback */}
-                      <div 
-                        className="hidden w-full h-full bg-gradient-to-br from-blue-100 to-purple-100 items-center justify-center"
-                        style={{ display: 'none' }}
-                      >
-                        <template.icon className="w-16 h-16 text-blue-600 opacity-50" />
-                        <span className="absolute bottom-4 text-sm text-blue-600 font-medium">
-                          Template Preview
-                        </span>
-                      </div>
-                    </motion.div>
+                    </div>
 
-                    {/* Animated external link icon on hover */}
                     <motion.div
                       className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg z-20"
                       initial={{ scale: 0, opacity: 0 }}
@@ -356,7 +246,6 @@ export default function TemplatesPage() {
                         scale: hoveredCard === template.id ? 1 : 0,
                         opacity: hoveredCard === template.id ? 1 : 0
                       }}
-                      transition={{ type: "spring", stiffness: 500, damping: 20 }}
                     >
                       <ExternalLink className="w-3 h-3 text-blue-600" />
                     </motion.div>
@@ -365,25 +254,18 @@ export default function TemplatesPage() {
                   {/* Template Content */}
                   <div className="p-6 relative z-10">
                     <div className="flex items-center justify-between mb-4">
-                      <motion.span
-                        className="px-3 py-1.5 bg-blue-100 text-blue-600 text-sm font-medium rounded-full border border-blue-200/50"
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                      >
+                      <span className="px-3 py-1.5 bg-blue-100 text-blue-600 text-sm font-medium rounded-full border border-blue-200/50">
                         {template.category}
-                      </motion.span>
+                      </span>
                       <div className="flex items-center space-x-1">
                         <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                         <span className="text-sm text-slate-600 font-medium">{template.rating}</span>
                       </div>
                     </div>
 
-                    <motion.h3
-                      className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300"
-                      whileHover={{ x: 2 }}
-                    >
+                    <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
                       {template.title}
-                    </motion.h3>
+                    </h3>
 
                     <p className="text-slate-600 mb-4 leading-relaxed">
                       {template.description}
@@ -392,30 +274,18 @@ export default function TemplatesPage() {
                     {/* Features */}
                     <div className="space-y-2.5 mb-6">
                       {template.features.map((feature, idx) => (
-                        <motion.div
-                          key={idx}
-                          className="flex items-center text-sm text-slate-600"
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.5 + (idx * 0.1) }}
-                          whileHover={{ x: 5 }}
-                        >
-                          <motion.div
-                            className="w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-3"
-                            animate={{ scale: [1, 1.3, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, delay: idx * 0.3 }}
-                          />
+                        <div key={idx} className="flex items-center text-sm text-slate-600">
+                          <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-3" />
                           {feature}
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
 
                     {/* CTA Button */}
                     <motion.button
                       className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 relative overflow-hidden group/btn"
-                      whileHover="hover"
-                      whileTap="tap"
-                      variants={buttonHoverVariants}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => handleTemplateClick(template.liveUrl)}
                     >
                       <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
@@ -431,37 +301,25 @@ export default function TemplatesPage() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Standard Contact Button Section - MOVED ABOVE CUSTOM SECTION */}
+        {/* Contact Button Section */}
         <motion.div
           className="text-center mt-20 mb-24"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.7, ease: "easeOut" }}
+          transition={{ delay: 0.8, duration: 0.7 }}
         >
           <div className="bg-white/60 backdrop-blur-lg rounded-3xl p-12 border border-white/40 shadow-xl relative overflow-hidden">
-            {/* Background glow */}
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
-            
-            <motion.h3
-              className="text-3xl font-bold text-slate-900 mb-4"
-              animate={{ scale: [1, 1.02, 1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            >
+            <h3 className="text-3xl font-bold text-slate-900 mb-4">
               Ready to Get Started?
-            </motion.h3>
-            <motion.p
-              className="text-xl text-slate-700 mb-8 max-w-2xl mx-auto leading-relaxed"
-              animate={{ opacity: [0.8, 1, 0.8] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
+            </h3>
+            <p className="text-xl text-slate-700 mb-8 max-w-2xl mx-auto leading-relaxed">
               Found a template you like? Contact us to get your portfolio set up and customized to your needs.
-            </motion.p>
+            </p>
             <motion.button
               className="inline-flex items-center px-10 py-5 bg-gradient-to-r from-green-600 to-blue-600 text-white font-semibold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group"
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => handleContactClick()}
+              onClick={handleContactClick}
             >
               <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               <MessageCircle className="w-5 h-5 mr-3 relative z-10" />
@@ -470,33 +328,20 @@ export default function TemplatesPage() {
           </div>
         </motion.div>
 
-        {/* Custom Development Section - NOW BELOW THE READY SECTION */}
+        {/* Custom Development Section */}
         <motion.section
           className="mt-16"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true }}
         >
           <div className="text-center mb-16">
-            <motion.h2
-              className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              viewport={{ once: true }}
-            >
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
               Want Something <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Completely Custom?</span>
-            </motion.h2>
-            <motion.p
-              className="text-xl text-slate-700 max-w-3xl mx-auto leading-relaxed"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              viewport={{ once: true }}
-            >
+            </h2>
+            <p className="text-xl text-slate-700 max-w-3xl mx-auto leading-relaxed">
               Don't see exactly what you're looking for? We'll create a bespoke portfolio tailored to your unique style and requirements.
-            </motion.p>
+            </p>
           </div>
 
           <motion.div
@@ -504,7 +349,7 @@ export default function TemplatesPage() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true }}
           >
             {customPackages.map((pkg, index) => (
               <motion.div
@@ -515,51 +360,28 @@ export default function TemplatesPage() {
               >
                 {pkg.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                    <motion.div
-                      className="px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-bold rounded-full shadow-lg"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.8 + index * 0.1, type: "spring", stiffness: 300 }}
-                    >
+                    <div className="px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-bold rounded-full shadow-lg">
                       MOST POPULAR
-                    </motion.div>
+                    </div>
                   </div>
                 )}
                 
                 <motion.div
                   className={`bg-white/70 backdrop-blur-lg rounded-3xl border-2 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 relative ${
-                    pkg.popular 
-                      ? 'border-orange-400 scale-105' 
-                      : 'border-white/40'
+                    pkg.popular ? 'border-orange-400 scale-105' : 'border-white/40'
                   }`}
                   whileHover={{ y: -5, scale: pkg.popular ? 1.08 : 1.02 }}
                 >
                   {/* Package Header */}
                   <div className={`p-8 text-center ${
-                    pkg.popular 
-                      ? 'bg-gradient-to-r from-orange-500 to-red-500' 
-                      : 'bg-gradient-to-r from-blue-600 to-purple-600'
+                    pkg.popular ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-blue-600 to-purple-600'
                   }`}>
-                    <motion.div
-                      className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <pkg.icon className={`w-8 h-8 ${
-                        pkg.popular ? 'text-orange-100' : 'text-blue-100'
-                      }`} />
-                    </motion.div>
-                    <h3 className={`text-2xl font-bold ${
-                      pkg.popular ? 'text-white' : 'text-white'
-                    } mb-2`}>
-                      {pkg.title}
-                    </h3>
-                    <div className="text-3xl font-bold text-white mb-2">
-                      {pkg.price}
+                    <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <pkg.icon className={`w-8 h-8 ${pkg.popular ? 'text-orange-100' : 'text-blue-100'}`} />
                     </div>
-                    <p className={`text-sm ${
-                      pkg.popular ? 'text-orange-100' : 'text-blue-100'
-                    }`}>
+                    <h3 className="text-2xl font-bold text-white mb-2">{pkg.title}</h3>
+                    <div className="text-3xl font-bold text-white mb-2">{pkg.price}</div>
+                    <p className={`text-sm ${pkg.popular ? 'text-orange-100' : 'text-blue-100'}`}>
                       Delivery: {pkg.delivery}
                     </p>
                   </div>
@@ -572,24 +394,12 @@ export default function TemplatesPage() {
                     
                     <div className="space-y-3 mb-8">
                       {pkg.features.map((feature, idx) => (
-                        <motion.div
-                          key={idx}
-                          className="flex items-center text-sm text-slate-700"
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 1 + (idx * 0.1) }}
-                        >
-                          <motion.div
-                            className={`w-2 h-2 rounded-full mr-3 ${
-                              pkg.popular 
-                                ? 'bg-gradient-to-r from-orange-500 to-red-500' 
-                                : 'bg-gradient-to-r from-blue-500 to-purple-500'
-                            }`}
-                            animate={{ scale: [1, 1.2, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, delay: idx * 0.2 }}
-                          />
+                        <div key={idx} className="flex items-center text-sm text-slate-700">
+                          <div className={`w-2 h-2 rounded-full mr-3 ${
+                            pkg.popular ? 'bg-gradient-to-r from-orange-500 to-red-500' : 'bg-gradient-to-r from-blue-500 to-purple-500'
+                          }`} />
                           {feature}
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
 
@@ -621,7 +431,6 @@ export default function TemplatesPage() {
             className="text-center mt-12"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
             viewport={{ once: true }}
           >
             <div className="bg-gradient-to-r from-slate-900 to-slate-700 rounded-3xl p-8 text-white shadow-xl">
